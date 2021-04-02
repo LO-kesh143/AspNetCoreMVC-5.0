@@ -3,3 +3,6 @@
 ################################################################################
 
 /.vs
+/LKGGroup.Bookstore/.vs/LKGGroup.Bookstore
+/LKGGroup.Bookstore/LKGGroup.Bookstore/bin/Debug/net5.0
+/LKGGroup.Bookstore/LKGGroup.Bookstore/obj

@@ -1,6 +1,8 @@
 using LKGGroup.Bookstore.Data;
+using LKGGroup.Bookstore.Helpers;
 using LKGGroup.Bookstore.Models;
 using LKGGroup.Bookstore.Reopsitory;
+using LKGGroup.Bookstore.Service;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -66,7 +68,12 @@ namespace LKGGroup.Bookstore
             services.AddScoped<ILanguageRepository, LanguageRepository>();
             services.AddSingleton<IMessageRepository, MessageRepository>();
             services.AddScoped<IAccountRepository, AccountRepository>();
+            services.AddScoped<IUserService, UserService>();
+           // services.AddScoped<IEmailService, EmailService>();
 
+            services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>, ApplicationUserClaimsPrincipalFactory>();
+
+            services.Configure<SMTPConfigModel>(_configuration.GetSection("SMTPConfig"));
             services.Configure<NewBookAlertConfig>("InternalBooks",_configuration.GetSection("NewBookAlert"));
             services.Configure<NewBookAlertConfig>("ThirdPartyBooks",_configuration.GetSection("ThirdPartyBook"));
         }

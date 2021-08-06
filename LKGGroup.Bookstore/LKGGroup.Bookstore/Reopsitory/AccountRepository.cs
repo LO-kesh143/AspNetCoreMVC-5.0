@@ -1,4 +1,5 @@
 ﻿using LKGGroup.Bookstore.Models;
+using LKGGroup.Bookstore.Service;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
@@ -11,11 +12,15 @@ namespace LKGGroup.Bookstore.Reopsitory
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly IUserService _userService;
 
-        public AccountRepository(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
+        public AccountRepository(UserManager<ApplicationUser> userManager,
+            SignInManager<ApplicationUser> signInManager,
+            IUserService userService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _userService = userService;
         }
 
         public async Task<IdentityResult> CreateUserAsync(SignUpUserModel userModel)
@@ -43,7 +48,13 @@ namespace LKGGroup.Bookstore.Reopsitory
         {
             await _signInManager.SignOutAsync();
         }
+
+        public async Task<IdentityResult> ChangePasswordAsync(ChangePasswordModel model)
+        {
+            var userId = _userService.GetUserId();
+            var user = await _userManager.FindByIdAsync(userId);
+            return await _userManager.ChangePasswordAsync(user, model.CurrentPassword, model.NewPassword);
+
+        }
     }
-
-
 }

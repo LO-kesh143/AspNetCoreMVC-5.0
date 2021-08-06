@@ -1,0 +1,62 @@
+﻿ @*@inject LKGGroup.Bookstore.Reopsitory.IBookRepository _bookRepo*@
+
+@using Microsoft.Extensions.Configuration
+@inject IConfiguration _configuration
+@inject Microsoft.Extensions.Options.IOptionsSnapshot<NewBookAlertConfig> _newBookAlertconfiguration
+@{ 
+    var newBookAlertconfiguration = _newBookAlertconfiguration.Get("InternalBooks");
+    var thirdPartyBookAlertconfiguration = _newBookAlertconfiguration.Get("ThirdPartyBooks");
+}
+<header>
+    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <img src="~/images/LKGBookLogo.png" alt="" width="70" height="70" asp-append-version="true" />
+                @* @_bookRepo.GetAppName()*@
+                @_configuration["AppName"]
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                <ul class="navbar-nav">
+                    <partial name="_LoginInfo" />
+                </ul>
+                <ul class="navbar-nav flex-grow-1">
+                    <li class="nav-item">
+                        <a class="nav-link active" asp-controller="Home" asp-action="Index">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" asp-controller="Home" asp-action="AboutUs">AboutUs</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" asp-controller="Home" asp-action="ContactUs">ContactUs</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" asp-controller="Book" asp-action="GetAllBooks">Get AllBooks</a>
+                    </li>
+                    @*<li class="nav-item">
+                            <a class="nav-link active" asp-protocol="http" asp-host="lkggroup.com" asp-controller="Book" asp-action="GetAllBooks">NewLink</a>
+                        </li>*@
+                    <li class="nav-item">
+                        <a class="nav-link active" asp-controller="Book" asp-action="AddNewBook">Add NewBook</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    @if (newBookAlertconfiguration.DisplayNewBookAlert)
+    {
+        <div class="alert alert-info" role="alert">
+            @newBookAlertconfiguration.BookName
+        </div>
+    }
+    @if (thirdPartyBookAlertconfiguration.DisplayNewBookAlert)
+    {
+        <div class="alert alert-info" role="alert">
+            @thirdPartyBookAlertconfiguration.BookName
+        </div>
+    }
+
+</header>

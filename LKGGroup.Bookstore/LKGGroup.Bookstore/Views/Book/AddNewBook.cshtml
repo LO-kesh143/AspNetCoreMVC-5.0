@@ -1,0 +1,119 @@
+﻿@using LKGGroup.Bookstore.Enums
+@inject LKGGroup.Bookstore.Reopsitory.ILanguageRepository _languageRepo
+
+@{
+    ViewData["Title"] = "Add NewBook";
+}
+@model BookModel
+
+<div class="container">
+    <h3 class="display-4">Add New Book</h3>
+    <hr />
+    @if (ViewBag.IsSuccess == true)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>Congratulations !</strong> You have added new book successfully. <br />
+            Click <a asp-controller="Book" asp-action="GetBook" asp-route-id="@ViewBag.BookId">Here</a> to view details.
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    }
+
+    @*<div class="d-flex justify-content-center">
+            <div class="spinner-border" role="status" id="myLoader" style="display:none">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>*@
+
+    @*data-ajax="true" data-ajax-complete="myComplete"
+        data-ajax-success="mySuccess" data-ajax-failure="myFailure"
+        data-ajax-loading="#myLoader"*@
+
+<form method="post" enctype="multipart/form-data" asp-action="AddNewBook" asp-controller="Book">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="form-group">
+        <label asp-for="Language"></label>
+        <select asp-for="LanguageId" class="form-control" asp-items="(await _languageRepo.GetLanguages()).Select(x=> new SelectListItem() { Text = x.Name, Value = x.Id.ToString() })">
+
+            <option value="">Please select your book language</option>
+        </select>
+        <span asp-validation-for="LanguageId" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Title"></label>
+        <input asp-for="Title" class="form-control" />
+        <span asp-validation-for="Title" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Author"></label>
+        <input asp-for="Author" class="form-control" />
+        <span asp-validation-for="Author" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Discription"></label>
+        <textarea asp-for="Discription" class="form-control"> </textarea>
+        <span asp-validation-for="Discription" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="TotalPages"></label>
+        <input asp-for="TotalPages" class="form-control" />
+        <span asp-validation-for="TotalPages" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="CoverPhoto"></label>
+        <div class="custom-file">
+            <input asp-for="CoverPhoto" class="custom-file-input" id="customFile">
+            <label class="custom-file-label" for="customFile">Choose file</label>
+        </div>
+        <span asp-validation-for="CoverPhoto" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="GalleryFiles"></label>
+        <div class="custom-file">
+            <input asp-for="GalleryFiles" class="custom-file-input" id="customFile">
+            <label class="custom-file-label" for="customFile">Choose file</label>
+        </div>
+        <span asp-validation-for="GalleryFiles" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="BookPdf"></label>
+        <div class="custom-file">
+            <input asp-for="BookPdf" class="custom-file-input" id="customFile">
+            <label class="custom-file-label" for="customFile">Choose file</label>
+        </div>
+        <span asp-validation-for="BookPdf" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <input type="submit" value="Add Book" class="btn btn-primary" />
+    </div>
+</form>
+</div>
+
+@*@section scripts{ 
+    <script>
+        function myComplete(data) {
+            alert("I am from Complete function");
+            console.log(data);
+        }
+
+        function mySuccess(data) {
+            alert("I am from Success function");
+            console.log(data);
+        }
+
+        function myFailure(data) {
+            alert("I am from Failure function");
+            console.log(data);
+        }
+    </script>
+}*@

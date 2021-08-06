@@ -1,0 +1,43 @@
+﻿@{ViewData["Title"] = "Home";}
+@inject LKGGroup.Bookstore.Reopsitory.IBookRepository _bookRepository
+
+<section class="jumbotron text-center">
+    <div class="container">
+        <h1>Welcome to Bookstore</h1>
+        <p class="lead text-muted">
+            Welcome to Bookshop!
+            Bookshop is an online bookstore with a mission to financially support local, independent bookstores.
+            We believe that bookstores are essential to a healthy culture. They’re where authors can connect with readers,
+            where we discover new writers, where children get hooked on the thrill of reading that can last a lifetime. 
+            They’re also anchors for our downtowns and communities.
+        </p>
+        <p>
+            <a href="#" class="btn btn-primary my-2">Search books</a>
+        </p>
+        @foreach (var item in await _bookRepository.GetAllBooks())
+        {
+           // <h2>@item.Title</h2>
+        }
+
+    </div>
+</section>
+
+<div class="py-5 bg-light">
+    <div class="container">
+        <h3 class="h3">Top Books</h3>
+        @await Component.InvokeAsync("TopBooks", new { count = 15 })
+
+        @*<vc:top-books count="5"></vc:top-books>*@
+
+        
+    </div>
+</div>
+
+
+@section scripts{ 
+    <script>
+        $(document).ready(function () {
+         //   alert("Document is ready");
+        })
+    </script>
+}

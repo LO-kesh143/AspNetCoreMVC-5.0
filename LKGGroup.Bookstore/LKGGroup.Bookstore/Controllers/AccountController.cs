@@ -67,8 +67,18 @@ namespace LKGGroup.Bookstore.Controllers
                     }
                     return RedirectToAction("Index", "Home");
                 }
-
-                ModelState.AddModelError("", "Invalid Credentials");
+                if (result.IsNotAllowed)
+                {
+                    ModelState.AddModelError("", "Invalid Credentials");
+                }
+                else if (result.IsLockedOut)
+                {
+                    ModelState.AddModelError("", "Your account is blocked. Please try after 20 minutes.");
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Invalid Credentials");
+                }
             }
             return View(signInModel);
         }

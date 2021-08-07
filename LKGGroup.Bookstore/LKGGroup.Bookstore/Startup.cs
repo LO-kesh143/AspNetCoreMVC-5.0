@@ -36,7 +36,7 @@ namespace LKGGroup.Bookstore
                 options => options.UseSqlServer(_configuration.GetConnectionString("DefaultConnection")));
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
-                .AddEntityFrameworkStores<BookStoreContext>();
+                .AddEntityFrameworkStores<BookStoreContext>().AddDefaultTokenProviders();
 
             services.Configure<IdentityOptions>(options =>
             {
@@ -46,6 +46,10 @@ namespace LKGGroup.Bookstore
                 options.Password.RequireLowercase = false;
                 options.Password.RequireNonAlphanumeric = false;
                 options.Password.RequireUppercase = false;
+
+                options.SignIn.RequireConfirmedEmail = false;
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(20);
+                options.Lockout.MaxFailedAccessAttempts = 3;
             });
 
             services.ConfigureApplicationCookie(config =>

@@ -35,12 +35,21 @@ namespace LKGGroup.Bookstore.Reopsitory
                 UserName = userModel.Email
             };
             var result = await _userManager.CreateAsync(user, userModel.Password);
+            if (result.Succeeded)
+            {
+                var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                if (!string.IsNullOrEmpty(token))
+                {
+
+                }
+            }
+
             return result;
         }
 
         public async Task<SignInResult> PasswordSignInAsync(SignInModel signInModel)
         {
-            var result = await _signInManager.PasswordSignInAsync(signInModel.Email, signInModel.Password, signInModel.RememberMe, false);
+            var result = await _signInManager.PasswordSignInAsync(signInModel.Email, signInModel.Password, signInModel.RememberMe, true);
             return result;
         }
 
@@ -54,6 +63,11 @@ namespace LKGGroup.Bookstore.Reopsitory
             var userId = _userService.GetUserId();
             var user = await _userManager.FindByIdAsync(userId);
             return await _userManager.ChangePasswordAsync(user, model.CurrentPassword, model.NewPassword);
+
+        }
+
+        private async Task SendConfirmationEmail(ApplicationUser user, string token)
+        {
 
         }
     }

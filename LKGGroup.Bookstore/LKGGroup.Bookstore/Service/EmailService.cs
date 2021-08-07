@@ -13,7 +13,7 @@ namespace LKGGroup.Bookstore.Service
 {
     public class EmailService //: IEmailService
     {
-        private const string tamplatePath = @"EmailTamplate/{0}.html";
+        private const string templatePath = @"EmailTemplate/{0}.html";
         private readonly SMTPConfigModel _smtpConfig;
 
         //public async Task SendTestEmail(UserEmailOptions userEmailOptions)
@@ -59,9 +59,9 @@ namespace LKGGroup.Bookstore.Service
             await smtpClient.SendMailAsync(mail);
         }
 
-        private string GetEmailBody(string tamplateName)
+        private string GetEmailBody(string templateName)
         {
-            var body = File.ReadAllText(string.Format(tamplatePath, tamplateName));
+            var body = File.ReadAllText(string.Format(templatePath, templateName));
             return body;
         }
     }
